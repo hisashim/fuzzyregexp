@@ -49,17 +49,17 @@
         (t (let* ((body-indices (if (<= (length str) 2)
                                     '()
                                   (number-sequence 1 (- (length str) 2))))
-                  (fst (concat "\\([^"
+                  (fst (concat "[^"
                                (regexp-quote (substring str 0 1))
-                               "]\\|\\b\\)"
+                               "]"
                                (substring str 1 nil)))
                   (body (map 'list
                              (lambda (i) (%fre-remove-substring str i (+ i 1)))
                              body-indices))
                   (lst (concat (regexp-quote (substring str 0 -1))
-                               "\\([^"
+                               "[^"
                                (substring str -1 nil)
-                               "]\\|\\b\\)")))
+                               "]")))
              `(,fst ,@body ,lst)))))
 
 (defun %fre-patterns-one-char-inserted (str ins)
@@ -88,7 +88,7 @@
            (%fre-remove-if-match str (%fre-patterns-one-char-removed str))
            (%fre-patterns-one-char-inserted str ".")
            (%fre-patterns-one-char-replaced
-            str (lambda (s) (concat "\\([^" (regexp-quote s) "]\\|\\b\\)")))
+            str (lambda (s) (concat "[^" (regexp-quote s) "]")))
            (%fre-remove-if-match str (%fre-patterns-one-char-transposed str))))
          (patterns-concise (delete-dups (remq nil (remove "" patterns)))))
     patterns-concise))

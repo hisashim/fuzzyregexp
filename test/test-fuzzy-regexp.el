@@ -47,9 +47,9 @@
   (should (equal
            '(("")
              ("")
-             ("\\([^a]\\|\\b\\)b" "a\\([^b]\\|\\b\\)")
-             ("\\([^a]\\|\\b\\)bc" "ac" "ab\\([^c]\\|\\b\\)")
-             ("\\([^a]\\|\\b\\)bcd" "acd" "abd" "abc\\([^d]\\|\\b\\)"))
+             ("[^a]b" "a[^b]")
+             ("[^a]bc" "ac" "ab[^c]")
+             ("[^a]bcd" "acd" "abd" "abc[^d]"))
            `(,(%fre-patterns-one-char-removed "")
              ,(%fre-patterns-one-char-removed "a")
              ,(%fre-patterns-one-char-removed "ab")
@@ -94,13 +94,13 @@
 (ert-deftest test-%fre-patterns-one-char-modified ()
   (should (equal
            '(()
-             ("\\([^a]\\|\\b\\)")
-             ("\\([^a]\\|\\b\\)b" "a\\([^b]\\|\\b\\)" "a.b" "ba")
-             ("\\([^a]\\|\\b\\)bc" "ac" "ab\\([^c]\\|\\b\\)"
-              "a.bc" "ab.c" "a\\([^b]\\|\\b\\)c" "bac" "acb")
-             ("a.a" "\\([^a]\\|\\b\\)a" "a\\([^a]\\|\\b\\)")
-             ("\\([^a]\\|\\b\\)bb" "ab\\([^b]\\|\\b\\)"
-              "a.bb" "ab.b" "a\\([^b]\\|\\b\\)b" "bab"))
+             ("[^a]")
+             ("[^a]b" "a[^b]" "a.b" "ba")
+             ("[^a]bc" "ac" "ab[^c]"
+              "a.bc" "ab.c" "a[^b]c" "bac" "acb")
+             ("[^a]a" "a[^a]" "a.a")
+             ("[^a]bb" "ab[^b]"
+              "a.bb" "ab.b" "a[^b]b" "bab"))
            `(,(%fre-patterns-one-char-modified "")
              ,(%fre-patterns-one-char-modified "a")
              ,(%fre-patterns-one-char-modified "ab")
@@ -111,11 +111,11 @@
 (ert-deftest test-%fre-one-char-modified ()
   (should (equal
            '(""
-             "\\([^a]\\|\\b\\)"
-             "\\([^a]\\|\\b\\)b\\|a\\([^b]\\|\\b\\)\\|a.b\\|ba"
-             "\\([^a]\\|\\b\\)bc\\|ac\\|ab\\([^c]\\|\\b\\)\\|a.bc\\|ab.c\\|a\\([^b]\\|\\b\\)c\\|bac\\|acb"
-             "a.a\\|\\([^a]\\|\\b\\)a\\|a\\([^a]\\|\\b\\)"
-             "\\([^a]\\|\\b\\)bb\\|ab\\([^b]\\|\\b\\)\\|a.bb\\|ab.b\\|a\\([^b]\\|\\b\\)b\\|bab")
+             "[^a]"
+             "[^a]b\\|a[^b]\\|a.b\\|ba"
+             "[^a]bc\\|ac\\|ab[^c]\\|a.bc\\|ab.c\\|a[^b]c\\|bac\\|acb"
+             "[^a]a\\|a[^a]\\|a.a"
+             "[^a]bb\\|ab[^b]\\|a.bb\\|ab.b\\|a[^b]b\\|bab")
            `(,(%fre-one-char-modified "")
              ,(%fre-one-char-modified "a")
              ,(%fre-one-char-modified "ab")
