@@ -5,7 +5,14 @@
 ;; License: Public Domain
 ;;
 ;; Usage:
-;;   (fuzzy-regexp "FOO") ;=> "[^f]oo\\|fo\\|fo[^o]")
+;;   (fuzzy-regexp "foo") ;=> "[^f]oo\\|fo[^o]\\|f.oo\\|fo.o\\|f[^o]o\\|ofo"
+;;                        ;   which matches goo, fog, fgoo, fogo, ofo, etc.,
+;;                        ;   but does not match foo itself.
+;;
+;; Motivation:
+;;   I needed a fuzzy matching library for finding typos which can
+;;   exclude query keyword itself from the result, but could not find
+;;   one. So I hacked up a kludge.
 
 (eval-when-compile (require 'cl))
 
@@ -103,7 +110,16 @@
 
 ;; public interface
 
-(defun fuzzy-regexp (str)
+(defun fuzzy-regexp-exclusive (str)
+  "Generate regexp that matches strings modified from STR by one
+character but not STR itself"
   (%fre-one-char-modified str))
+
+(defun fuzzy-regexp-inclusive (str)
+  "Generate regexp that matches strings modified from STR by one
+character and STR itself"
+  (%fre-one-char-modified-and-itself str))
+
+(defalias 'fuzzy-regexp 'fuzzy-regexp-exclusive)
 
 (provide 'fuzzy-regexp)
