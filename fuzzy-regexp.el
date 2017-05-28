@@ -99,7 +99,7 @@
 (defun %fre-one-char-modified-and-itself (str)
   (mapconcat
    'identity
-   (append (%fre-patterns-one-char-modified str) str) "\\|"))
+   (append (%fre-patterns-one-char-modified str) (list str)) "\\|"))
 
 ;; public interface
 

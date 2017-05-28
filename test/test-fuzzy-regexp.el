@@ -132,4 +132,14 @@
              ,(string-match (%fre-one-char-modified "abc") "abc")
              ,(string-match (%fre-one-char-modified "abb") "abb")))))
 
+(ert-deftest test-%fre-one-char-modified-and-itself ()
+  (should (equal
+           '("[^a]bc\\|ac\\|ab[^c]\\|a.bc\\|ab.c\\|a[^b]c\\|bac\\|acb\\|abc")
+           `(,(%fre-one-char-modified-and-itself "abc")))))
+
+(ert-deftest test-%fre-one-char-modified-and-itself-match ()
+  (should (equal
+           '(0)
+           `(,(string-match (%fre-one-char-modified-and-itself "abc") "abc")))))
+
 ;; (ert-run-tests-batch-and-exit)
