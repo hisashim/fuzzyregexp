@@ -130,22 +130,22 @@
            `(,(%fre-one-char-modified "abc" nil)
              ,(%fre-one-char-modified "abc" t)))))
 
-(ert-deftest test-%fre-one-char-modified-match ()
+(ert-deftest test-fuzzy-regexp ()
   (should (equal
            '(0
-             nil
              nil)
-           `(,(string-match (%fre-one-char-modified "abc") "abX")
-             ,(string-match (%fre-one-char-modified "abc") "abc")
-             ,(string-match (%fre-one-char-modified "abb") "abb")))))
+           `(,(string-match (fuzzy-regexp "abc") "abX")
+             ,(string-match (fuzzy-regexp "abc") "abc")))))
 
-(ert-deftest test-%fre-one-char-modified-match-self-inclusive ()
+(ert-deftest test-fuzzy-regexp-self-inclusive ()
   (should (equal
            '(0
              nil
+             0
              0)
-           `(,(string-match (%fre-one-char-modified "abc" nil) "abX")
-             ,(string-match (%fre-one-char-modified "abc" nil) "abc")
-             ,(string-match (%fre-one-char-modified "abc" t) "abc")))))
+           `(,(string-match (fuzzy-regexp "abc" nil) "abX")
+             ,(string-match (fuzzy-regexp "abc" nil) "abc")
+             ,(string-match (fuzzy-regexp "abc" t) "abX")
+             ,(string-match (fuzzy-regexp "abc" t) "abc")))))
 
 ;; (ert-run-tests-batch-and-exit)
