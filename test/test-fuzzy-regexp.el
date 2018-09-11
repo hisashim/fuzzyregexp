@@ -123,6 +123,13 @@
              ,(%fre-one-char-modified "aa")
              ,(%fre-one-char-modified "abb")))))
 
+(ert-deftest test-%fre-one-char-modified-self-inclusive ()
+  (should (equal
+           '("[^a]bc\\|ac\\|ab[^c]\\|a.bc\\|ab.c\\|a[^b]c\\|bac\\|acb"
+             "abc\\|[^a]bc\\|ac\\|ab[^c]\\|a.bc\\|ab.c\\|a[^b]c\\|bac\\|acb")
+           `(,(%fre-one-char-modified "abc" nil)
+             ,(%fre-one-char-modified "abc" t)))))
+
 (ert-deftest test-%fre-one-char-modified-match ()
   (should (equal
            '(0
@@ -132,14 +139,13 @@
              ,(string-match (%fre-one-char-modified "abc") "abc")
              ,(string-match (%fre-one-char-modified "abb") "abb")))))
 
-(ert-deftest test-%fre-one-char-modified-and-itself ()
+(ert-deftest test-%fre-one-char-modified-match-self-inclusive ()
   (should (equal
-           '("[^a]bc\\|ac\\|ab[^c]\\|a.bc\\|ab.c\\|a[^b]c\\|bac\\|acb\\|abc")
-           `(,(%fre-one-char-modified-and-itself "abc")))))
-
-(ert-deftest test-%fre-one-char-modified-and-itself-match ()
-  (should (equal
-           '(0)
-           `(,(string-match (%fre-one-char-modified-and-itself "abc") "abc")))))
+           '(0
+             nil
+             0)
+           `(,(string-match (%fre-one-char-modified "abc" nil) "abX")
+             ,(string-match (%fre-one-char-modified "abc" nil) "abc")
+             ,(string-match (%fre-one-char-modified "abc" t) "abc")))))
 
 ;; (ert-run-tests-batch-and-exit)
