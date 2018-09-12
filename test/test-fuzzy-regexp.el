@@ -130,6 +130,13 @@
            `(,(%fre-one-char-modified "abc" nil)
              ,(%fre-one-char-modified "abc" t)))))
 
+(ert-deftest test-%fre-one-char-modified-word-match ()
+  (should (equal
+           '("[^a]bc\\|ac\\|ab[^c]\\|a.bc\\|ab.c\\|a[^b]c\\|bac\\|acb"
+             "\\b\\(?:[^a]bc\\|ac\\|ab[^c]\\|a.bc\\|ab.c\\|a[^b]c\\|bac\\|acb\\)\\b")
+           `(,(%fre-one-char-modified "abc" nil nil)
+             ,(%fre-one-char-modified "abc" nil t)))))
+
 (ert-deftest test-fuzzy-regexp ()
   (should (equal
            '(0
@@ -147,5 +154,16 @@
              ,(string-match (fuzzy-regexp "abc" nil) "abc")
              ,(string-match (fuzzy-regexp "abc" t) "abX")
              ,(string-match (fuzzy-regexp "abc" t) "abc")))))
+
+(ert-deftest test-fuzzy-regexp-word-match ()
+  (should (equal
+           '(1
+             1
+             1
+             nil)
+           `(,(string-match (fuzzy-regexp "abc" nil nil) " abX ")
+             ,(string-match (fuzzy-regexp "abc" nil nil) "zabXz")
+             ,(string-match (fuzzy-regexp "abc" nil t) " abX ")
+             ,(string-match (fuzzy-regexp "abc" nil t) "zabXz")))))
 
 ;; (ert-run-tests-batch-and-exit)

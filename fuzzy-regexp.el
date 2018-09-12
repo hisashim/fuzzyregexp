@@ -100,22 +100,25 @@
          (patterns-concise (delete-dups (remq nil (remove "" patterns)))))
     patterns-concise))
 
-(defun %fre-one-char-modified (str &optional self-inclusive)
+(defun %fre-one-char-modified (str &optional self-inclusive word-match)
   "A naive substitute for regexp-opt that keeps regexp special
 characters as-is (not quoted) internally.
 Returns regexp.
-If SELF-INCLUSIVE is true, regexp matches STR itself."
+If SELF-INCLUSIVE is true, regexp also matches STR itself.
+If WORD-MATCH is true, regexp tries to match whole words only (not substrings)."
   (let* ((pats-src (%fre-patterns-one-char-modified str))
          (pats-fin (if self-inclusive (cons str pats-src) pats-src))
-         (re (mapconcat 'identity pats-fin "\\|")))
-    re))
+         (re-src (mapconcat 'identity pats-fin "\\|"))
+         (re-fin (if word-match (apply 'concat `("\\b\\(?:" ,re-src "\\)\\b")) re-src)))
+    re-fin))
 
 ;; public interface
 
-(defun fuzzy-regexp (str &optional include-self)
+(defun fuzzy-regexp (str &optional include-self word-match)
   "Generate regexp that matches strings modified from STR by one
 character.
-If INCLUDE-SELF is true, regexp matches STR itself."
-  (%fre-one-char-modified str include-self))
+If INCLUDE-SELF is true, regexp alsos matches STR itself.
+If WORD-MATCH is true, regexp tries to match whole words only (not substrings)."
+  (%fre-one-char-modified str include-self word-match))
 
 (provide 'fuzzy-regexp)
