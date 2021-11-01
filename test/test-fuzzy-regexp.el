@@ -1,7 +1,7 @@
 ;; -*- encoding: utf-8 -*-
 ;;
-;; tests for fuzzy-regexp
-;; Copyright (c) 2014 Hisashi Morita
+;; Developer tests for fuzzy-regexp
+;; Copyright (C) 2014 Hisashi Morita
 ;; License: Public Domain
 
 (require 'ert)
@@ -38,10 +38,15 @@
   (should (equal
            '("ba"
              "bac"
-             "acb")
+             "acb"
+             "bacd"
+             "acbd")
            `(,(fuzzy-regexp--transpose-substring "ab" 0)
              ,(fuzzy-regexp--transpose-substring "abc" 0)
-             ,(fuzzy-regexp--transpose-substring "abc" 1)))))
+             ,(fuzzy-regexp--transpose-substring "abc" 1)
+             ,(fuzzy-regexp--transpose-substring "abcd" 0)
+             ,(fuzzy-regexp--transpose-substring "abcd" 1)
+             ))))
 
 (ert-deftest test-fuzzy-regexp--patterns-one-char-removed ()
   (should (equal
@@ -166,4 +171,4 @@
              ,(string-match (fuzzy-regexp "abc" nil t) "abX")
              ,(string-match (fuzzy-regexp "abc" nil t) "abc")))))
 
-;; (ert-run-tests-batch-and-exit)
+;;; test-fuzzy-regexp.el ends here
