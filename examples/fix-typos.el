@@ -31,4 +31,6 @@
   (interactive "MString: ")
   (query-replace-regexp (fuzzy-regexp str) str))
 
+(provide 'fix-typos)
+
 ;;; fix-typos.el ends here

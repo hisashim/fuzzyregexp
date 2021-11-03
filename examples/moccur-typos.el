@@ -60,4 +60,6 @@ Show many candidates allowing false positives.
 
 (defalias 'moccur-typos 'moccur-typos-moderate)
 
+(provide 'moccur-typos)
+
 ;;; moccur-typos.el ends here
